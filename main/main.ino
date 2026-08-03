@@ -120,3 +120,24 @@ void runFor(unsigned long durationMs, bool forward, int pwm) {
     turn, then print encoderCount again. The difference is your true
     counts/rev - update the constant above to match.
   */
+
+  
+  /*
+    will add this after calibrating.
+
+    // Forward for 4 seconds
+    Serial.println(F("-- FORWARD --"));
+    runFor(4000, true, 100);
+
+    // Stop for 1 second
+    setMotor(true, 0);
+    delay(1000);
+
+    // Reverse for 4 seconds
+    Serial.println(F("-- REVERSE --"));
+    runFor(4000, false, 100);
+
+    // Stop for 1 second
+    setMotor(true, 0);
+    delay(1000);
+  */
