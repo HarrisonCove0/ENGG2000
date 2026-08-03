@@ -62,24 +62,15 @@ void setup() {
     Serial.println(F("Motor spin test starting..."));
 }
 
+// Loop to help calibrate the motor.
 void loop(){
-  // Forward for 4 seconds
-  Serial.println(F("-- FORWARD --"));
-  runFor(4000, true, 100);
-
-  // Stop for 1 second
-  setMotor(true, 0);
-  delay(1000);
-
-  // Reverse for 4 seconds
-  Serial.println(F("-- REVERSE --"));
-  runFor(4000, false, 100);
-
-  // Stop for 1 second
-  setMotor(true, 0);
-  delay(1000);
-}
-
+    static unsigned long lastPrint = 0;
+        if (millis() - lastPrint >= 100) {
+          lastPrint = millis();
+          Serial.println(encoderCount);
+        }
+    }
+    
 void runFor(unsigned long durationMs, bool forward, int pwm) {
     setMotor(forward, pwm);
     unsigned long start = millis();
