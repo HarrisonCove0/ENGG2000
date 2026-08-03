@@ -80,7 +80,6 @@ void loop(){
   delay(1000);
 }
 
-// -----------------------------------------------------------------
 void runFor(unsigned long durationMs, bool forward, int pwm) {
     setMotor(forward, pwm);
     unsigned long start = millis();
@@ -92,7 +91,6 @@ void runFor(unsigned long durationMs, bool forward, int pwm) {
     }
   }
   
-  // -----------------------------------------------------------------
   void reportSpeed() {
     unsigned long now = millis();
     if (now - lastReportTime >= REPORT_INTERVAL_MS) {
@@ -111,13 +109,11 @@ void runFor(unsigned long durationMs, bool forward, int pwm) {
     }
   }
   
-  // -----------------------------------------------------------------
   void setMotor(bool forward, int pwm) {
     digitalWrite(PIN_PH, forward ? HIGH : LOW);
     analogWrite(PIN_EN, pwm);
   }
   
-  // -----------------------------------------------------------------
   void encoderISR() {
     uint8_t a = digitalRead(PIN_ENC_A);
     uint8_t b = digitalRead(PIN_ENC_B);
