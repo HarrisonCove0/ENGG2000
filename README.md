@@ -2,6 +2,9 @@
 
 ### Copy paste the latest code into the code section here: https://app.cirkitdesigner.com/project/934460b0-a08c-455a-97dc-35d2d97a4052
 
+
+https://app.cirkitdesigner.com/project/af0dd4c3-cadb-4a09-90b7-13dafa0733d4
+
 We have implemented a template code base for the spinning motor mechanism.
 The template comprises of pin connections, calibration constants and test functions to verify the motor and encoder are working properly.
 In the meantime, we can test the code through a tinkercad simulation.
