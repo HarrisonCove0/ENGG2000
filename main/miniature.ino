@@ -2,10 +2,10 @@
   Spins the motor forward for 3s, stops, reverses for 3s, stops. Repeats.
 
   WIRING:
-    PH     -> D8   (direction)
-    EN     -> D9   (PWM speed)
+    PH     -> D8   (direction) // Yellow
+    EN     -> D9   (PWM speed) // Brown
     PMODE  -> GND
-    nSLEEP -> 5V
+    nSLEEP -> 5V // Green
     VREF   -> resistor divider (don't leave floating)
     OUT1/OUT2 -> motor terminals
     VM     -> battery pack V+
@@ -20,16 +20,16 @@ const uint8_t PIN_EN = 9;
 const int TEST_PWM = 150;   //Speed variable
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(115200); // Sends a ping between the Arduino and computer at 115200 bits per second
   //Set the pins to Output mode
   pinMode(PIN_PH, OUTPUT);
   pinMode(PIN_EN, OUTPUT);
-
-  //
+  // We set the pins to output, essentially voltage is outputted and not inputted (default).
   digitalWrite(PIN_PH, LOW);
   analogWrite(PIN_EN, 0);
+  // Start up preset before values are changed to keep the system controlled.
 
-  //Debug output statement
+  // Debug output statement
   Serial.println(F("Simple motor test starting..."));
 }
 
