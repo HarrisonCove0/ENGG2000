@@ -22,7 +22,7 @@
 const uint8_t PIN_PH = 8;
 //PWM speed
 const uint8_t PIN_EN = 9;
-const int TEST_PWM = 100;   //Speed variable
+const int TEST_PWM = 150;   //Speed variable
 
 //IR sensor pin
 const uint8_t PIN_IR_1 = 6;
