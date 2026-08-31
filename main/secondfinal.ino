@@ -26,7 +26,8 @@ const int TEST_PWM = 100;   //Speed variable
 
 //IR sensor pin
 const uint8_t PIN_IR_1 = 6;
-bool lastState = HIGH;   //Demodulating receivers idle HIGH
+
+bool locked = false; //True once we've found and stopped on a beacon.
 
 void setup() {
   Serial.begin(115200); // Sends a ping between the Arduino and computer at 115200 bits per second
@@ -41,26 +42,21 @@ void setup() {
   //Set up IR sensor pin
   pinMode(PIN_IR_1, INPUT);
 
-  //Debug output statement
-  Serial.println(F("Sensor-triggered motor test starting..."));
+  //Start sweeping immediately in setup(), since loop just needs to loop for the stop conditions.
+  Serial.println(F("Searching for beacon...")); 
+  digitalWrite(PIN_PH, HIGH); //Forward/search direction
+  analogWrite(PIN_EN, TEST_PWM);
 }
 
 void loop() {
+  if (locked) return; //Don't rotate since we're pointing at the source
+
   bool state = digitalRead(PIN_IR_1);
 
   //Only trigger on the moment it changes from idle to detected (edge, not level)
-  if (state == LOW && lastState == HIGH) {
+  if (state == LOW) {
+    analogWrite(PIN_EN, 0); //Stop rotation since we're pointing at the source
+    locked = true;
     Serial.println(F("Sensor 1: BEACON DETECTED -- spinning motor"));
-
-    //Sets the pin to high = forward
-    digitalWrite(PIN_PH, HIGH);
-    analogWrite(PIN_EN, TEST_PWM);
-    delay(3000);
-
-    //Sets the power to 0%
-    analogWrite(PIN_EN, 0);
-    Serial.println(F("-- STOP --"));
   }
-
-  lastState = state;
 }
