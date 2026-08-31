@@ -23,7 +23,7 @@ const uint8_t PIN_PH = 8;
 //PWM speed
 const uint8_t PIN_EN = 9;
 const int FAST_PWM = 0;   //Startup/default speed -- max, for a clear contrast
-const int SLOW_PWM = 150;     //Speed while sensing/firing -- fully stopped
+const int SLOW_PWM = 30;     //Speed while sensing/firing -- fully stopped
 //IR sensor pin
 const uint8_t PIN_IR_1 = 6;
 bool lastState = HIGH;   //Demodulating receivers idle HIGH
@@ -58,9 +58,11 @@ void loop() {
     analogWrite(PIN_EN, SLOW_PWM);
 
     //Laser on/off, same logic as Blink
-    digitalWrite(LED_BUILTIN, HIGH);  // change state of the LED by setting the pin to the HIGH voltage level
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(500);
+    digitalWrite(LED_BUILTIN, LOW);  // change state of the LED by setting the pin to the HIGH voltage level
     delay(1000);                      // wait for a second
-    digitalWrite(LED_BUILTIN, LOW);   // change state of the LED by setting the pin to the LOW voltage level
+       // change state of the LED by setting the pin to the LOW voltage level
 
     //Speed back up to fast
     analogWrite(PIN_EN, FAST_PWM);
