@@ -27,6 +27,29 @@ const int SLOW_PWM = 30;     //Speed while sensing/firing -- fully stopped
 //IR sensor pin
 const uint8_t PIN_IR_1 = 6;
 bool lastState = HIGH;   //Demodulating receivers idle HIGH
+
+const unsigned long RAMP_MS = 200;
+bool ramping = false;
+unsigned long rampStart = 0;
+int rampFrom = 0;
+
+void startRamp(int fromPwm) {
+  rampFrom = fromPwm;
+  rampStart = millis();
+  ramping = true;
+}
+
+void updateRamp() {
+  if (!ramping) return;
+  unsigned long t = millis() - rampStart;
+  if (t >= RAMP_MS) {
+    analogWrite(PIN_EN, FAST_PWM);
+    ramping = false;
+  } else {
+    analogWrite(PIN_EN, rampFrom + (long)(FAST_PWM - rampFrom) * t / RAMP_MS);
+  }
+}
+
 void setup() {
   Serial.begin(115200); // Sends a ping between the Arduino and computer at 115200 bits per second
   //Set the pins to Output mode
@@ -42,18 +65,22 @@ void setup() {
 
   //Start the motor spinning fast on startup
   digitalWrite(PIN_PH, HIGH);
-  analogWrite(PIN_EN, FAST_PWM);
+  analogWrite(PIN_EN, 0);
+  startRamp(0);
   Serial.println(F("Motor spinning FAST on startup..."));
 
   //Debug output statement
   Serial.println(F("Sensor-triggered laser test starting..."));
 }
 void loop() {
+  updateRamp();
   bool state = digitalRead(PIN_IR_1);
   //Only trigger on the moment it changes from idle to detected (edge, not level)
   if (state == LOW && lastState == HIGH) {
     Serial.println(F("Sensor 1: BEACON DETECTED -- SLOWING motor + laser ON"));
 
+    ramping = false;
+    
     //Slow the motor down (fully stop) to let the laser fire
     analogWrite(PIN_EN, SLOW_PWM);
 
@@ -65,7 +92,7 @@ void loop() {
        // change state of the LED by setting the pin to the LOW voltage level
 
     //Speed back up to fast
-    analogWrite(PIN_EN, FAST_PWM);
+    startRamp(SLOW_PWM);
     Serial.println(F("-- SPEEDING BACK UP TO FAST --"));
   }
   lastState = state;
